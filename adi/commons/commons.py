@@ -1,3 +1,5 @@
+# The imparative convention: Let paths always end with a slash!
+
 import os
 import re
 import shutil
@@ -8,8 +10,11 @@ import shutil
 #########
 
 def addFile(path, string=''):
-    with open(path, 'w') as fil: # `with` makes sure, file always closes properly.
-        fil.write(string) # If no string was passed, use empty string for mere file creation.
+    if fileExists(path):
+        exit("File %s exists already, skipping its creation."%path)
+    else:
+        with open(path, 'w') as fil:
+            fil.write(string)
 
 def addDirs(path):
     os.makedirs(path)
@@ -27,9 +32,12 @@ def fileExists(path):
 def getFirstChildrenPaths(path):
     return glob(path + '*/')
 
+def getRealPath(path):
+    return os.path.realpath(path) + '/'
+
 def getParentDirPath(path):
-    path = os.path.realpath(path) # path might be a symlink, get real!
-    parent_path = '/'.join((path.split('/')[:-1])) + '/'# convention: paths always end with slash
+    path = os.path.realpath(path)
+    parent_path = '/'.join((path.split('/')[:-1])) + '/'
     return parent_path
 
 def readFile(path):
@@ -37,6 +45,10 @@ def readFile(path):
     string = fil.read()
     fil.close()    
     return string
+
+def fileHasStr(path, pattern):
+    str = readFile(path)
+    return hasStr(str, pattern)
 
 ########
 # STRS #
@@ -55,6 +67,10 @@ def getIndent(line):
         else:
             break
     return indent
+
+def hasStr(str, pattern):
+    if str.find(pattern) != -1: return True
+    else: return False
 
 def insertAfterLine(path, pattern, string, PRESERVE_INDENT=True):
     FOUND = False
@@ -76,10 +92,13 @@ def insertAfterLine(path, pattern, string, PRESERVE_INDENT=True):
 
 def insertBeforeLine(path, pattern, string):
     digest = ''
+    indent = ''
     for line in getLines(path):
         if line.find(pattern) > -1:
-            digest += getIndent(line) + string
+            digest += indent + string
         digest += line
+        if line != '\n':
+            indent = getIndent(line)    
     addFile(path, digest)
 
 def insertAfterFirstLine(path, string, PRESERVE_INDENT=True):
