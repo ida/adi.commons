@@ -9,8 +9,8 @@ import shutil
 # FILES #
 #########
 
-def addFile(path, string=''):
-    if fileExists(path):
+def addFile(path, string='', OVERWRITE=False):
+    if fileExists(path) and not OVERWRITE:
         exit("File %s exists already, skipping its creation."%path)
     else:
         with open(path, 'w') as fil:
@@ -99,7 +99,7 @@ def insertBeforeLine(path, pattern, string):
         digest += line
         if line != '\n':
             indent = getIndent(line)    
-    addFile(path, digest)
+    addFile(path, digest, OVERWRITE=True)
 
 def insertAfterFirstLine(path, string, PRESERVE_INDENT=True):
     digest = ''
@@ -112,7 +112,7 @@ def insertAfterFirstLine(path, string, PRESERVE_INDENT=True):
                 string = getIndent(line) + string
             digest += string
             FIRSTLINE_PASSED = True
-    addFile(path, digest)
+    addFile(path, digest, OVERWRITE=True)
 
 def insertBeforeLastTag(path, string):
     tag_start_pos = 0
@@ -130,7 +130,7 @@ def insertBeforeLastTag(path, string):
             break
         pos -= 1
     digest = food[0:tag_start_pos] + string + food[tag_start_pos:lenn+1]
-    addFile(path, digest)
+    addFile(path, digest, OVERWRITE=True)
 
 def replaceWords(words, string):
     """ Replace words, as defined in the passed 'words'-dict. Shamelessly stolen of:
