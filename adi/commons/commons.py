@@ -79,7 +79,6 @@ def insertAfterLine(path, pattern, string, PRESERVE_INDENT=True):
         string + '\n'
     with open(path) as fin, open(tmp_path, 'w') as fout:
         for line in fin:
-            print line
             if line.find(pattern) != -1:
                 if PRESERVE_INDENT:
                     string = getIndent(line) + string
