@@ -3,7 +3,7 @@
 import os
 import re
 import shutil
-
+import glob
 
 #########
 # FILES #
@@ -29,8 +29,11 @@ def fileExists(path):
     if os.path.exists(path): return True
     else: return False
 
+def getFirstChildrenDirPaths(path):
+    return glob.glob(path + '*/')
+
 def getFirstChildrenPaths(path):
-    return glob(path + '*/')
+    return glob.glob(path + '*')
 
 def getRealPath(path):
     return os.path.realpath(path) + '/'
