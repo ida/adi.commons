@@ -57,6 +57,22 @@ def fileHasStr(path, pattern):
 # STRS #
 ########
 
+def extractUrlsOfStr(string):
+    """ Returns everything starting with 'http' and
+        ending with a whitespace or '>', as a list.
+    """
+
+    # Looks for starting with 'http' and ends with space or linebreak:
+    urls = re.findall('(http\S+)', string)
+
+    # If urls end with '>', strip trailing garbage:
+    trimmed_urls=[]
+    for url in urls:
+        url = url.split('>')[0]
+        trimmed_urls.append(url)
+
+    return trimmed_urls
+
 def getLines(path):
     with open(path) as fil:
         lines = fil.readlines()
