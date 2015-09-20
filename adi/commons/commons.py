@@ -34,16 +34,18 @@ def getParentDirPath(path):
 
 def addFile(path, string='', OVERWRITE=False):
     if fileExists(path) and not OVERWRITE:
-        exit("File %s exists already, skipping its creation."%path)
+        exit("'%s' exists already, skipping its creation. Force an overwrite with 'OVERWRITE=True'."%path)
     else:
         with open(path, 'w') as fil:
             fil.write(string)
 
 def addDirs(path):
     if not fileExists(path): os.makedirs(path)
+    else: exit("'%s' exists already, skipping its creation."%path)
 
 def delFile(path):
     if fileExists(path): os.remove(path)
+    else: exit("'%s' doesn't exist, skipping its deletion."%path)
 
 def delDirs(path):
     shutil.rmtree(path)
@@ -53,13 +55,11 @@ def fileExists(path):
     else: return False
 
 def getStr(path):
-    with open(path) as fil:
-        string = fil.read()
+    with open(path) as fil: string = fil.read()
     return string
 
 def getLines(path):
-    with open(path) as fil:
-        lines = fil.readlines()
+    with open(path) as fil: lines = fil.readlines()
     return lines
 
 def fileHasStr(path, pattern):
