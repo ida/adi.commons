@@ -40,11 +40,10 @@ def addFile(path, string='', OVERWRITE=False):
             fil.write(string)
 
 def addDirs(path):
-    os.makedirs(path)
+    if not fileExists(path): os.makedirs(path)
 
 def delFile(path):
     if fileExists(path): os.remove(path)
-    else: print "File %s doesn't exist, skipping its deletion."
 
 def delDirs(path):
     shutil.rmtree(path)
