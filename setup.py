@@ -5,7 +5,7 @@ version = '0.3'
 
 setup(name='adi.commons',
       version=version,
-      description="Misc helper-scripts for creating and expanding Plone-Add-Ons.",
+      description="Some helpers-methods for often repeating and general purposes, to be used of other eggs.",
       long_description=open("README.md").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.md")).read(),
       # Get more strings from
