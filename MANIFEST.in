@@ -1,0 +1,8 @@
+recursive-include adi
+recursive-include docs *
+include *.txt
+include *.rst
+include *.md
+global-exclude *.pyc
+global-exclude *.pyo
+
