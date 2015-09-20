@@ -1,9 +1,32 @@
-# The imparative convention: Let paths always end with a slash!
+# The imparative convention: Let directory-paths always end with a slash!
+# Reason: Less typing and immediate distinction of files.
 
 import os
 import re
 import shutil
 import glob
+
+#########
+# PATHS #
+#########
+
+def getHome():
+    home = os.path.expanduser("~") + '/'
+    return home
+
+def getFirstChildrenDirPaths(path):
+    return glob.glob(path + '*/')
+
+def getFirstChildrenPaths(path):
+    return glob.glob(path + '*')
+
+def getRealPath(path):
+    return os.path.realpath(path) + '/'
+
+def getParentDirPath(path):
+    path = os.path.realpath(path)
+    parent_path = '/'.join((path.split('/')[:-1])) + '/'
+    return parent_path
 
 #########
 # FILES #
@@ -20,7 +43,8 @@ def addDirs(path):
     os.makedirs(path)
 
 def delFile(path):
-    os.remove(path)
+    if fileExists(path): os.remove(path)
+    else: print "File %s doesn't exist, skipping its deletion."
 
 def delDirs(path):
     shutil.rmtree(path)
@@ -29,41 +53,41 @@ def fileExists(path):
     if os.path.exists(path): return True
     else: return False
 
-def getFirstChildrenDirPaths(path):
-    return glob.glob(path + '*/')
-
-def getFirstChildrenPaths(path):
-    return glob.glob(path + '*')
-
-def getRealPath(path):
-    return os.path.realpath(path) + '/'
-
-def getParentDirPath(path):
-    path = os.path.realpath(path)
-    parent_path = '/'.join((path.split('/')[:-1])) + '/'
-    return parent_path
-
-def readFile(path):
-    fil = open(path)
-    string = fil.read()
-    fil.close()    
+def getStr(path):
+    with open(path) as fil:
+        string = fil.read()
     return string
 
+def getLines(path):
+    with open(path) as fil:
+        lines = fil.readlines()
+    return lines
+
 def fileHasStr(path, pattern):
-    str = readFile(path)
+    str = getStr(path)
     return hasStr(str, pattern)
 
 ########
 # STRS #
 ########
 
-def extractUrlsOfStr(string):
-    """ Returns everything starting with 'http' and
+def getIndent(string):
+    indent = ''
+    for char in string:
+        if char == ' ':
+            indent += char
+        else:
+            break
+    return indent
+
+def getUrls(string):
+    """ Returns everything starting with 'http://' or 'https://' and
         ending with a whitespace or '>', as a list.
     """
 
-    # Looks for starting with 'http' and ends with space or linebreak:
-    urls = re.findall('(http\S+)', string)
+    # Looks for starting with 'http://' or 'https://' and ends with space or linebreak:
+    urls = re.findall('(https:\/\/\S+)', string)
+    urls += re.findall('(http:\/\/\S+)', string)
 
     # If urls end with '>', strip trailing garbage:
     trimmed_urls=[]
@@ -73,60 +97,42 @@ def extractUrlsOfStr(string):
 
     return trimmed_urls
 
-def getLines(path):
-    with open(path) as fil:
-        lines = fil.readlines()
-    return lines
-
-def getIndent(line):
-    indent = ''
-    for char in line:
-        if char == ' ':
-            indent += char
-        else:
-            break
-    return indent
-
-def hasStr(str, pattern):
-    if str.find(pattern) != -1: return True
+def hasStr(string, pattern):
+    if string.find(pattern) != -1: return True
     else: return False
 
-def insertAfterLine(path, pattern, string, PRESERVE_INDENT=True):
-    FOUND = False
-    tmp_path = path + '.tmp'
-    if not string.endswith('\n'):
-        string + '\n'
-    with open(path) as fin, open(tmp_path, 'w') as fout:
-        for line in fin:
-            if line.find(pattern) != -1:
-                if PRESERVE_INDENT:
-                    string = getIndent(line) + string
-                FOUND = True
-            fout.write(line)
-            if FOUND:
-                fout.write(string)
-                FOUND = False
-    shutil.move(tmp_path, path)
+def insertAfterLine(path, pattern, string, KEEP_INDENT=True):
+    nuline = None
+    digest = ''
+    indent = ''
+    for line in getLines(path):
+        if line.find(pattern) > -1:
+            nuline = string
+        digest += line
+        if KEEP_INDENT and line != '\n':
+            indent = getIndent(line)    
+        if nuline: digest+= indent + nuline; nuline = None
+    addFile(path, digest, OVERWRITE=True)
 
-def insertBeforeLine(path, pattern, string):
+def insertBeforeLine(path, pattern, string, KEEP_INDENT=True):
     digest = ''
     indent = ''
     for line in getLines(path):
         if line.find(pattern) > -1:
             digest += indent + string
         digest += line
-        if line != '\n':
+        if KEEP_INDENT and line != '\n':
             indent = getIndent(line)    
     addFile(path, digest, OVERWRITE=True)
 
-def insertAfterFirstLine(path, string, PRESERVE_INDENT=True):
+def insertAfterFirstLine(path, string, KEEP_INDENT=True):
     digest = ''
     lines = open(path).readlines()
     FIRSTLINE_PASSED = False
     for line in lines:
         digest += line
         if not FIRSTLINE_PASSED:
-            if PRESERVE_INDENT:
+            if KEEP_INDENT:
                 string = getIndent(line) + string
             digest += string
             FIRSTLINE_PASSED = True
@@ -136,7 +142,7 @@ def insertBeforeLastTag(path, string):
     tag_start_pos = 0
     digest = ''
     IN_TAG = False
-    food = readFile(path)
+    food = getStr(path)
     lenn = len(food) - 1
     pos = lenn
     while pos > 0:
