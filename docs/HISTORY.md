@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4 (150920)
+-----------
+
+- Really adjust MANIFEST (good morning Kreuzberg)
+
+
 0.3 (150920)
 -----------
 
