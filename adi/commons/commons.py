@@ -1,5 +1,5 @@
 # The imparative convention: Let directory-paths always end with a slash!
-# Reason: Less typing and immediate distinction of files.
+# Reason: Less typing and have an immediate distinction of files.
 
 import os
 import re
