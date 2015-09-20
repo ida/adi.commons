@@ -8,16 +8,13 @@ setup(name='adi.commons',
       description="Some helpers-methods for often repeating and general purposes, to be used of other eggs.",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from
-      # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
-        "Framework :: Plone",
         "Programming Language :: Python",
         ],
       keywords='',
-      author='',
-      author_email='',
-      url='http://svn.plone.org/svn/collective/',
+      author='Ida Ebkes',
+      author_email='contact@ida-ebkes.eu',
+      url='https://github.com/ida/adi.commons/',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['adi'],
@@ -25,12 +22,5 @@ setup(name='adi.commons',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          # -*- Extra requirements: -*-
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-
-      [z3c.autoinclude.plugin]
-      target = plone
-      """,
       )
