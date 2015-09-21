@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.5 (150921)
+-----------
+
+- Let addDirs() fail silently, if the directory to create, exists already.
+- Better hlp-msgs.
+
+
 0.4 (150920)
 -----------
 
