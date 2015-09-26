@@ -34,14 +34,14 @@ def getParentDirPath(path):
 
 def addFile(path, string='', OVERWRITE=False):
     if fileExists(path) and not OVERWRITE:
-        exit("'%s' exists already, skipping its creation. Force an overwrite with 'OVERWRITE=True'."%path)
+        exit("File '%s' exists already, skipping its creation. Force an overwrite with 'OVERWRITE=True'."%path)
     else:
         with open(path, 'w') as fil:
             fil.write(string)
 
 def addDirs(path):
     if not fileExists(path): os.makedirs(path)
-    else: exit("'%s' exists already, skipping its creation."%path)
+    else: exit("Directory '%s' exists already, skipping its creation."%path)
 
 def delFile(path):
     if fileExists(path): os.remove(path)
