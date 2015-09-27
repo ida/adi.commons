@@ -36,6 +36,7 @@ def addFile(path, string='', OVERWRITE=False):
     if fileExists(path) and not OVERWRITE:
         print "File '" + path + "' exists already, skipping its creation. Force an overwrite with 'OVERWRITE=True'."
     else:
+        addDirs( '/'.join( path.split('/')[:-1] ) )
         with open(path, 'w') as fil:
             fil.write(string)
 
