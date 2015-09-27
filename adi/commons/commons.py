@@ -112,6 +112,12 @@ def insertAfterLine(path, pattern, string, KEEP_INDENT=True):
         if nuline: digest+= indent + nuline; nuline = None
     addFile(path, digest, OVERWRITE=True)
 
+def insertAfterNthLine(path, string, n, KEEP_INDENT=True):
+    if not string.endswith('\n'): string += '\n'
+    lines = getLines(path)
+    lines.insert(n, string)
+    addFile(path, ''.join(lines), OVERWRITE=True)
+
 def insertBeforeLine(path, pattern, string, KEEP_INDENT=True):
     digest = ''
     indent = ''
