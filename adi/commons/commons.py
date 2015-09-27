@@ -41,7 +41,6 @@ def addFile(path, string='', OVERWRITE=False):
 
 def addDirs(path):
     if not fileExists(path): os.makedirs(path)
-    else: print"Directory '" + path + "' exists already, skipping its creation."
 
 def delFile(path):
     if fileExists(path): os.remove(path)
