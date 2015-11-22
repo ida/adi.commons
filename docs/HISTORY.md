@@ -4,6 +4,12 @@ Changelog
 0.6 (2015-11-22)
 ----------------
 
+- Add insertAfterNthLine().
+
+
+0.5 (1509201)
+-----------
+
 - Let addDirs() fail silently, if the directory to create, exists already.
 - Better hlp-msgs.
 
