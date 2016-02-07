@@ -51,8 +51,7 @@ def delDirs(path):
     shutil.rmtree(path)
 
 def fileExists(path):
-    if os.path.exists(path): return True
-    else: return False
+    return os.path.exists(path)
 
 def getStr(path):
     with open(path) as fil: string = fil.read()
@@ -65,6 +64,26 @@ def getLines(path):
 def fileHasStr(path, pattern):
     str = getStr(path)
     return hasStr(str, pattern)
+
+def writeFile(path, string):
+    with open(path, 'w') as fil:
+        fil.write(string)
+
+def appendToFile(path, string):
+    if fileExists(path):
+        text = getStr(path)
+        text += string
+    else:
+        text = string
+    writeFile(path, text)
+
+def prependToFile(path, string):
+    if fileExists(path):
+        text = getStr(path)
+        text = string + text
+    else:
+        text = string
+    writeFile(path, text)
 
 ########
 # STRS #
