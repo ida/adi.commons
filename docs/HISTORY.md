@@ -4,7 +4,7 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add writeFile(), appendToFile() and prependToFile().
 
 
 0.6 (2015-11-22)
