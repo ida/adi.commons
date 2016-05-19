@@ -212,3 +212,12 @@ def removeHtmlComments(string):
         pos += 1
     return new_string
 
+def removeLinesContainingPattern(file_name, pattern_str):
+    """ Remove each line of a file containing the pattern."""
+    string = ''
+    lines = getLines(file_name)
+    for line in lines:
+        if line.find(pattern_str) == -1:
+            string += line
+    addFile(file_name, string, True)
+
