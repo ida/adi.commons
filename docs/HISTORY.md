@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8 (unreleased)
+0.8 (2016-05-19)
 ----------------
 
 - Add removeLinesContainingPattern().
