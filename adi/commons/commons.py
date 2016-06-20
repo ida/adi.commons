@@ -33,9 +33,11 @@ def getParentDirPath(path):
 #########
 
 def addFile(path, string='', OVERWRITE=False):
-    if fileExists(path) and not OVERWRITE:
-        print "File '" + path + "' exists already, skipping its creation. Force an overwrite with 'OVERWRITE=True'."
-    else:
+    """
+    If file exists already, don't do nothing and fail silently,
+    unless OVERWRITE is True, then overwrite file with string.
+    """
+    if not fileExists(path) or OVERWRITE:
         addDirs( '/'.join( path.split('/')[:-1] ) )
         with open(path, 'w') as fil:
             fil.write(string)
@@ -44,8 +46,8 @@ def addDirs(path):
     if not fileExists(path): os.makedirs(path)
 
 def delFile(path):
-    if fileExists(path): os.remove(path)
-    else: print "File '" + path + "' doesn't exist, skipping its deletion."
+    """Fail silently, if file to remove doesn't exist."""
+    if not fileExists(path): os.remove(path)
 
 def delDirs(path):
     shutil.rmtree(path)
