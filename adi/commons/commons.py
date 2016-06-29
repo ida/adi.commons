@@ -183,9 +183,11 @@ def insertBeforeLastTag(path, string):
     addFile(path, digest, OVERWRITE=True)
 
 def replaceWords(words, string):
-    """ Replace words, as defined in the passed 'words'-dict. Shamelessly stolen of:
-        http://stackoverflow.com/questions/14028581/regex-how-to-replace-a-word-in-a-string-with-its-entry-in-a-python-dictionary#14030464
-        Thanks to Ned Batchelder.
+    """
+Replace words, as defined in the passed 'words'-dict. Shamelessly stolen of:
+http://stackoverflow.com/questions/14028581/
+regex-how-to-replace-a-word-in-a-string-with-its-entry-in-a-python-dictionary
+Thanks to Ned Batchelder.
     """
     pat = re.compile(r"\b(%s)\b" % "|".join(words))
     new_string = pat.sub(lambda m: words.get(m.group()), string)
