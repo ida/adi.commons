@@ -225,3 +225,13 @@ def removeLinesContainingPattern(file_name, pattern_str):
             string += line
     addFile(file_name, string, True)
 
+########
+# NRS  #
+########
+
+def isEven(number):
+    return number % 2 == 0
+
+def isOdd(number):
+    return number % 2 != 0
+
