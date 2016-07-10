@@ -4,7 +4,7 @@ Changelog
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add isEven() and isOdd().
 
 
 0.8 (2016-05-19)
