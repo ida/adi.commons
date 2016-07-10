@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9 (unreleased)
+0.9 (2016-07-10)
 ----------------
 
 - Add isEven() and isOdd().
