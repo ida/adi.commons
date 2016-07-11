@@ -182,6 +182,31 @@ def insertBeforeLastTag(path, string):
     digest = food[0:tag_start_pos] + string + food[tag_start_pos:lenn+1]
     addFile(path, digest, OVERWRITE=True)
 
+def iterToTags(list_, tag_type='div'):
+    """Regard lists and tuples, for now."""
+    list_ = str(list_)[1:-1]
+    items = list_.split(',')
+    html = '<div class="list">'
+    for item in items:
+        item = item.strip() # remove trailing spaces
+        item = item[1:-1] # remove apostrophs
+        html += '<div>' + item + '</div>'
+    html += '</div>'
+    return html
+
+def newlinesToTags(string, tag_type='div'):
+    """
+    Turn linebreaks into tag-wrappers, f.e.:
+    'Hi,\nwhazup?\nBye, Crow D.'
+    becomes:
+    '<div>Hi,</div><div>whazup?</div><div>Bye, Crow D.</div>'
+    """
+    html = ''
+    splits = string.split('\n')
+    for splitter in splits:
+        html += '<' + tag_type+ '>' + splitter + '</' + tag_type + '>'
+    return html
+
 def replaceWords(words, string):
     """
 Replace words, as defined in the passed 'words'-dict. Shamelessly stolen of:
