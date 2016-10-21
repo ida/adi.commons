@@ -4,7 +4,7 @@ Changelog
 1.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add newlinesToTags() and iterToTags().
 
 
 0.9 (2016-07-10)
