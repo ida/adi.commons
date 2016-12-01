@@ -121,6 +121,18 @@ def hasStr(string, pattern):
     if string.find(pattern) != -1: return True
     else: return False
 
+def htmlToText(html):
+    text = ''
+    IN_TAG = False
+    for char in html:
+        if char == '<':
+            IN_TAG = True
+        if not IN_TAG:
+            text += char
+        if char == '>':
+            IN_TAG = False
+    return text
+
 def insertAfterLine(path, pattern, string, KEEP_INDENT=True):
     nuline = None
     digest = ''
