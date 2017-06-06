@@ -6,13 +6,10 @@ import re
 import shutil
 import glob
 
+
 #########
 # PATHS #
 #########
-
-def getHome():
-    home = os.path.expanduser("~") + '/'
-    return home
 
 def getFirstChildrenDirPaths(path):
     return glob.glob(path + '*/')
@@ -20,17 +17,25 @@ def getFirstChildrenDirPaths(path):
 def getFirstChildrenPaths(path):
     return glob.glob(path + '*')
 
-def getRealPath(path):
-    return os.path.realpath(path) + '/'
+def getHome():
+    home = os.path.expanduser("~") + '/'
+    return home
 
 def getParentDirPath(path):
     path = os.path.realpath(path)
     parent_path = '/'.join((path.split('/')[:-1])) + '/'
     return parent_path
 
+def getRealPath(path):
+    return os.path.realpath(path) + '/'
+
+
 #########
 # FILES #
 #########
+
+def addDirs(path):
+    if not fileExists(path): os.makedirs(path)
 
 def addFile(path, string='', OVERWRITE=False):
     """
@@ -41,35 +46,6 @@ def addFile(path, string='', OVERWRITE=False):
         addDirs( '/'.join( path.split('/')[:-1] ) )
         with open(path, 'w') as fil:
             fil.write(string)
-
-def addDirs(path):
-    if not fileExists(path): os.makedirs(path)
-
-def delFile(path):
-    """Fail silently, if file to remove doesn't exist."""
-    if not fileExists(path): os.remove(path)
-
-def delDirs(path):
-    shutil.rmtree(path)
-
-def fileExists(path):
-    return os.path.exists(path)
-
-def getStr(path):
-    with open(path) as fil: string = fil.read()
-    return string
-
-def getLines(path):
-    with open(path) as fil: lines = fil.readlines()
-    return lines
-
-def fileHasStr(path, pattern):
-    str = getStr(path)
-    return hasStr(str, pattern)
-
-def writeFile(path, string):
-    with open(path, 'w') as fil:
-        fil.write(string)
 
 def append(path, string):
     """Alias of appendToFile()."""
@@ -82,6 +58,28 @@ def appendToFile(path, string):
     else:
         text = string
     writeFile(path, text)
+
+def delDirs(path):
+    shutil.rmtree(path)
+
+def delFile(path):
+    """Fail silently, if file to remove doesn't exist."""
+    if not fileExists(path): os.remove(path)
+
+def fileExists(path):
+    return os.path.exists(path)
+
+def fileHasStr(path, pattern):
+    str = getStr(path)
+    return hasStr(str, pattern)
+
+def getLines(path):
+    with open(path) as fil: lines = fil.readlines()
+    return lines
+
+def getStr(path):
+    with open(path) as fil: string = fil.read()
+    return string
 
 def prepend(path, string):
     """Alias of prependToFile()."""
@@ -102,6 +100,10 @@ def read(path):
 def write(path, string):
     """Alias of writeFile()."""
     return writeFile(path, string)
+
+def writeFile(path, string):
+    with open(path, 'w') as fil:
+        fil.write(string)
 
 
 ########
@@ -150,6 +152,19 @@ def htmlToText(html):
             IN_TAG = False
     return text
 
+def insertAfterFirstLine(path, string, KEEP_INDENT=True):
+    digest = ''
+    lines = open(path).readlines()
+    FIRSTLINE_PASSED = False
+    for line in lines:
+        digest += line
+        if not FIRSTLINE_PASSED:
+            if KEEP_INDENT:
+                string = getIndent(line) + string
+            digest += string
+            FIRSTLINE_PASSED = True
+    addFile(path, digest, OVERWRITE=True)
+
 def insertAfterLine(path, pattern, string, KEEP_INDENT=True):
     nuline = None
     digest = ''
@@ -169,30 +184,6 @@ def insertAfterNthLine(path, string, n, KEEP_INDENT=True):
     lines.insert(n, string)
     addFile(path, ''.join(lines), OVERWRITE=True)
 
-def insertBeforeLine(path, pattern, string, KEEP_INDENT=True):
-    digest = ''
-    indent = ''
-    for line in getLines(path):
-        if line.find(pattern) > -1:
-            digest += indent + string
-        digest += line
-        if KEEP_INDENT and line != '\n':
-            indent = getIndent(line)    
-    addFile(path, digest, OVERWRITE=True)
-
-def insertAfterFirstLine(path, string, KEEP_INDENT=True):
-    digest = ''
-    lines = open(path).readlines()
-    FIRSTLINE_PASSED = False
-    for line in lines:
-        digest += line
-        if not FIRSTLINE_PASSED:
-            if KEEP_INDENT:
-                string = getIndent(line) + string
-            digest += string
-            FIRSTLINE_PASSED = True
-    addFile(path, digest, OVERWRITE=True)
-
 def insertBeforeLastTag(path, string):
     tag_start_pos = 0
     digest = ''
@@ -209,6 +200,17 @@ def insertBeforeLastTag(path, string):
             break
         pos -= 1
     digest = food[0:tag_start_pos] + string + food[tag_start_pos:lenn+1]
+    addFile(path, digest, OVERWRITE=True)
+
+def insertBeforeLine(path, pattern, string, KEEP_INDENT=True):
+    digest = ''
+    indent = ''
+    for line in getLines(path):
+        if line.find(pattern) > -1:
+            digest += indent + string
+        digest += line
+        if KEEP_INDENT and line != '\n':
+            indent = getIndent(line)    
     addFile(path, digest, OVERWRITE=True)
 
 def isUpcomingWord(string, i, word):
@@ -283,6 +285,7 @@ def removeLinesContainingPattern(file_name, pattern_str):
         if line.find(pattern_str) == -1:
             string += line
     addFile(file_name, string, True)
+
 
 ########
 # NRS  #
