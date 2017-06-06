@@ -71,6 +71,10 @@ def writeFile(path, string):
     with open(path, 'w') as fil:
         fil.write(string)
 
+def append(path, string):
+    """Alias of appendToFile()."""
+    appendToFile(path, string)
+
 def appendToFile(path, string):
     if fileExists(path):
         text = getStr(path)
@@ -79,6 +83,10 @@ def appendToFile(path, string):
         text = string
     writeFile(path, text)
 
+def prepend(path, string):
+    """Alias of prependToFile()."""
+    prependToFile(path, string)
+
 def prependToFile(path, string):
     if fileExists(path):
         text = getStr(path)
@@ -86,6 +94,15 @@ def prependToFile(path, string):
     else:
         text = string
     writeFile(path, text)
+
+def read(path):
+    """Alias of getStr()."""
+    return getStr(path)
+
+def write(path, string):
+    """Alias of writeFile()."""
+    return writeFile(path, string)
+
 
 ########
 # STRS #
