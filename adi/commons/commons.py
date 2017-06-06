@@ -194,6 +194,11 @@ def insertBeforeLastTag(path, string):
     digest = food[0:tag_start_pos] + string + food[tag_start_pos:lenn+1]
     addFile(path, digest, OVERWRITE=True)
 
+def isUpcomingWord(string, i, word):
+    if i < len(string) - len(word) and string[i:i+len(word)] == word:
+        return True
+    else: return False
+
 def iterToTags(list_, tag_type='div'):
     """Regard lists and tuples, for now."""
     list_ = str(list_)[1:-1]
