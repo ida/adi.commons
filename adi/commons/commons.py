@@ -59,6 +59,10 @@ def appendToFile(path, string):
         text = string
     writeFile(path, text)
 
+def contains(path, pattern):
+    """Alias for hasStr()."""
+    return hasStr(path, pattern)
+
 def delDirs(path):
     shutil.rmtree(path)
 
