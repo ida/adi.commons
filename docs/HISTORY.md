@@ -6,6 +6,10 @@ Changelog
 
 - Add isUpcomingWord().
 
+- Add aliases of existing defs: read(), write(), append(), prepend(), contains().
+
+- Sort defs alphabetically.
+
 
 1.0 (2016-10-21)
 ----------------
