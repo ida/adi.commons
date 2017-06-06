@@ -4,7 +4,7 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add isUpcomingWord().
 
 
 1.0 (2016-10-21)
