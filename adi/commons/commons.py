@@ -11,6 +11,32 @@ import glob
 # PATHS #
 #########
 
+def getChildrenPaths(path):
+    paths = []
+    for root, dirs, files in os.walk(path):
+        files += dirs
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            paths.append(file_path)
+    return paths
+
+def getChildrenDirPaths(path):
+    paths = []
+    for root, dirs, files in os.walk(path):
+        files = dirs
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            paths.append(file_path)
+    return paths
+
+def getChildrenFilePaths(path):
+    paths = []
+    for root, dirs, files in os.walk(path):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            paths.append(file_path)
+    return paths
+
 def getFirstChildrenDirPaths(path):
     return glob.glob(path + '*/')
 
